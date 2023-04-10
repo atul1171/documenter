@@ -2,14 +2,14 @@ name: generate
 on:
   push:
     branches: [master, main]
-env:
-  DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
-  DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-  DATABASE_USER: ${{ secrets.DATABASE_USER }}
 jobs:
   gen_swagger:
     name: Generate swagger spec
     runs-on: ubuntu-latest
+    env:
+      DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
+      DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+      DATABASE_USER: ${{ secrets.DATABASE_USER }}
     strategy:
       matrix:
         node-version: [16.x]
