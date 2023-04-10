@@ -19,7 +19,7 @@ export class PetsController {
   constructor(private readonly petsService: PetsService) {}
 
   @Get()
-  @ApiOperation({ summary: 'View all pets' })
+  @ApiOperation({ summary: 'View all pets update the summary'  })
   @ApiOkResponse({
     description: 'Array of pets',
     type: PetEntity,
