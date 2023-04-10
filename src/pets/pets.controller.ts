@@ -41,13 +41,13 @@ export class PetsController {
   }
 
   @Put(':id')
-  @ApiOperation({ summary: 'Update an existing pet' })
+  @ApiOperation({ summary: 'Update an existing pet data' })
   @ApiParam({
     name: 'id',
     type: 'string',
     example: '1e8114f2-fc67-4b88-8864-90e4cb86019c',
   })
-  @ApiBody({ description: 'Updated pet details', type: UpdatePetDto })
+  @ApiBody({ description: 'Updated pet details sim', type: UpdatePetDto })
   @ApiOkResponse({
     description: 'The pet record has been successfully updated.',
     type: PetEntity,
