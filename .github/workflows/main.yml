@@ -1,0 +1,52 @@
+name: generate
+on:
+  push:
+    branches: [master, main]
+env:
+  DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
+  DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+  DATABASE_USER: ${{ secrets.DATABASE_USER }}
+jobs:
+  gen_swagger:
+    name: Generate swagger spec
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install dependencies
+        run: yarn --frozen-lockfile
+      - name: Generate swagger fil
+        run: yarn gen:swagger
+      - name: Upload swagger spec
+        uses: actions/upload-artifact@v3
+        with:
+          name: swagger
+          path: doc-gen/swagger.json
+          retention-days: 1
+  update:
+    name: Update postman collection
+    needs: gen_swagger
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download swagger file
+        uses: actions/download-artifact@v3
+        with:
+          name: swagger
+      - name: Update postman collection
+        uses: aisensiy/update-postman-schema-action@master
+        with:
+          postman-key: ${{ secrets.POSTMAN_API_KEY }}
+          postman-api-id: ${{ vars.API_ID }}
+          postman-api-version: ${{ vars.VERSION_ID }}
+          postman-api-schema-id: ${{ vars.SCHEMA_ID }}
+          schema-filepath: swagger.json
+          postman-schema-language: json
+          postman-schema-type: openapi3
+  
+  
