@@ -6,6 +6,7 @@ import { PetEntity } from '../pets/entities/pet.entity';
 
 dotenv.config();
 
+console.log(process.env.DATABASE_HOST)
 const databaseConfig: TypeOrmModuleOptions = {
   type: 'postgres',
   host: process.env.DATABASE_HOST,
